@@ -136,7 +136,7 @@ sigmas = np.exp(ws)
 print "Results:"
 print "mu:", mus
 print "sigma:", sigmas
-print "Evaluation of the variational posterior:", evaluate_variational_posterior(mus, mus, sigmas)
+print "Evaluation of variational posterior:", evaluate_variational_posterior(mus, mus, sigmas)
 
 
 def logp_normal_np(mu, tau, value):
