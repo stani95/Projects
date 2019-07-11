@@ -28,6 +28,7 @@ plt.scatter(cluster_centers[1, 0], cluster_centers[1, 1], c='b', s=100)
 
 plt.show()
 
+
 s=[]
 for i in real_data:
 	s.append(np.random.binomial(1, i[2], 1)[0])
@@ -39,12 +40,6 @@ for i in range(len(real_data)):
 
 get_data = np.array(get_data)
 #print get_data
-
-plt.figure(figsize=(5, 5))
-plt.scatter(get_data[:, 0], get_data[:, 1], c='g', alpha=0.5)
-plt.xlim(0, 5)
-plt.ylim(0, 5)
-plt.show()
 
 def a_2d_unit_gaussian(x, mu):
 	return (1./(2*np.pi))*np.exp(-0.5*((x[0]-mu[0])**2+(x[1]-mu[1])**2))
@@ -101,7 +96,7 @@ def adaptive_step_size_GD(data, init_mu, init_omega, tau = 1., eta = [0.01, 0.1,
 	g_gradient = gradient_of_ELBO(data, mu, w)
 	s = np.zeros(8)
 	s_old = [m**2 for m in g_gradient]
-	while np.linalg.norm(g_gradient)>3:
+	while np.linalg.norm(g_gradient)>10:
 		#print "gradient:", np.linalg.norm(g_gradient)
 		g_gradient = gradient_of_ELBO(data, mu, w)
 		for k in range(8):
@@ -134,14 +129,14 @@ def gradient_of_ELBO(data, mu, w):
 	gr_omega = gradient_of_ELBO_wrt_omega(data, mu, w)
 	return np.concatenate((gr_mu, gr_omega))
 
-mus, ws = adaptive_step_size_GD(get_data, init_values_mu, init_values_omega)
+mus, ws = adaptive_step_size_GD(all_samples, init_values_mu, init_values_omega)
 
 sigmas = np.exp(ws)
 
 print "Results:"
 print "mu:", mus
 print "sigma:", sigmas
-print "Evaluation of variational posterior:", evaluate_variational_posterior(mus, mus, sigmas)
+print "Evaluation of the variational posterior:", evaluate_variational_posterior(mus, mus, sigmas)
 
 
 def logp_normal_np(mu, tau, value):
@@ -163,9 +158,9 @@ def plot_logp_normal(ax, mu, sd, cmap):
     ax.contourf(xx, yy, threshold(zz), cmap=cmap, alpha=0.9)
 
 fig, ax = plt.subplots(figsize=(5, 5))
-plt.scatter(get_data[:, 0], get_data[:, 1], alpha=0.5, c='k')
+plt.scatter(all_samples[:, 0], all_samples[:, 1], alpha=0.5, c='k')
 plot_logp_normal(ax, np.array([mus[0],mus[1]]), np.array([1., 1.]), cmap='Reds')
 plot_logp_normal(ax, np.array([mus[2],mus[3]]), np.array([0.5,0.5]), cmap='Blues')
-plt.xlim(0, 5)
-plt.ylim(0, 5)
+plt.xlim(-5, 5)
+plt.ylim(-5, 5)
 plt.show()
