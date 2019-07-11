@@ -31,17 +31,19 @@ def logdistr(x, temperature=1.):
   
 #---------------------------------
 
+'''
 #Plot of the distribution to sample from:
 plt.clf()
 x = np.linspace(-5,10,1000)
 plt.plot(x, distr(x), color="BLACK", linewidth=2.0)
-#plt.show()
+plt.show()
 
 #Plot of the negative log of the distribution to sample from:
 plt.clf()
 x = np.linspace(-5,10,1000)
 plt.plot(x, logdistr(x), color="BLACK", linewidth=2.0)
-#plt.show()
+plt.show()
+'''
 
 #---------------------------------
 
